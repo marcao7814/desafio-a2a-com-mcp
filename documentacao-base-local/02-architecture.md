@@ -31,7 +31,7 @@ C4Context
     Rel(mcp, dados, "lê no boot / por request")
 ```
 
-**Leitura**: de fora, "A Ponte" é opaca — um cliente A2A não sabe (nem precisa saber) que por trás da skill `reservar-sala` existe um agente que por sua vez fala com um servidor MCP. Essa opacidade é requisito de produto (ver [01-pontea2a.prd.md §9](./01-pontea2a.prd.md#9-as-três-fricções-propositais-riscos-de-execução-conhecidos)).
+**Leitura**: de fora, "A Ponte" é opaca — um cliente A2A não sabe (nem precisa saber) que por trás da skill `reservar-sala` existe um agente que por sua vez fala com um servidor MCP. Essa opacidade é requisito de produto (ver [01-pontea2a.prd.md §20](./01-pontea2a.prd.md#20-as-três-fricções-propositais-riscos-de-execução-conhecidos)).
 
 ## 2. Nível 2 — Container
 
@@ -125,4 +125,4 @@ As decisões que sustentam este desenho (por que HMAC e não apenas base64, por 
 
 ## 5. Fora de escopo arquitetural
 
-Sem gateway, sem service mesh, sem banco de dados, sem fila de mensagens, sem container/orquestração — ver [01-pontea2a.prd.md §11](./01-pontea2a.prd.md#11-fora-de-escopo).
+Sem gateway, sem service mesh, sem banco de dados, sem fila de mensagens, sem container/orquestração — ver [01-pontea2a.prd.md §22](./01-pontea2a.prd.md#22-fora-de-escopo).

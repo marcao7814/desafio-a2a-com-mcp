@@ -158,4 +158,4 @@ Esta é a seção mais crítica — ver também [05-contract.md](./05-contract.m
 6. Limitação real de SDK → documentar no README com evidência, nunca contornar reescrevendo o protocolo.
 
 ## 11. Fora de escopo
-Ver [01-pontea2a.prd.md §11](./01-pontea2a.prd.md#11-fora-de-escopo).
+Ver [01-pontea2a.prd.md §22](./01-pontea2a.prd.md#22-fora-de-escopo).
