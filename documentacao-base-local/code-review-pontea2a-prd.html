@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Code Review — 00-01-pontea2a.prd.md</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --bg2: #161b22;
+    --bg3: #1c2128;
+    --border: #30363d;
+    --text: #c9d1d9;
+    --text-dim: #8b949e;
+    --accent: #58a6ff;
+    --red: #f85149;
+    --orange: #d29922;
+    --yellow: #e3b341;
+    --green: #3fb950;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; display: flex; min-height: 100vh;
+    background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 15px; line-height: 1.6;
+  }
+  code, pre, .mono { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  nav#sidebar {
+    width: 240px; flex-shrink: 0; background: var(--bg2); border-right: 1px solid var(--border);
+    padding: 20px 0; position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  }
+  nav#sidebar h2 { font-size: 13px; text-transform: uppercase; color: var(--text-dim); padding: 0 20px; margin: 18px 0 6px; }
+  nav#sidebar a { display: block; padding: 6px 20px; color: var(--text); font-size: 13.5px; }
+  nav#sidebar a:hover { background: var(--bg3); text-decoration: none; color: var(--accent); }
+  nav#sidebar .sev { display: inline-block; width: 1.1em; text-align: center; }
+
+  main { flex: 1; padding: 32px 40px; max-width: 980px; }
+  header.page-header { margin-bottom: 28px; }
+  header.page-header h1 { margin: 0 0 6px; font-size: 26px; }
+  header.page-header .meta { color: var(--text-dim); font-size: 13.5px; }
+  .note-adapt {
+    margin-top: 16px; padding: 14px 16px; background: var(--bg3); border: 1px solid var(--border);
+    border-left: 4px solid var(--accent); border-radius: 6px; font-size: 13.8px; color: var(--text-dim);
+  }
+
+  .scoreboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 24px 0 36px; }
+  .score-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 18px; }
+  .score-card h3 { margin: 0 0 12px; font-size: 14px; color: var(--text-dim); text-transform: uppercase; letter-spacing: .03em; }
+  .score-card .total { font-size: 30px; font-weight: 700; margin-bottom: 10px; }
+  .score-row { display: flex; gap: 14px; font-size: 13.5px; }
+  .score-row span { display: flex; align-items: center; gap: 4px; }
+
+  .banner-blockers {
+    background: rgba(248,81,73,.1); border: 1px solid var(--red); border-radius: 8px;
+    padding: 16px 20px; margin-bottom: 32px;
+  }
+  .banner-blockers h3 { margin: 0 0 8px; color: var(--red); font-size: 15px; }
+  .banner-blockers ul { margin: 0; padding-left: 20px; }
+
+  section.group { margin-bottom: 42px; }
+  section.group > h2 {
+    font-size: 20px; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 20px;
+    scroll-margin-top: 20px;
+  }
+
+  .finding {
+    background: var(--bg2); border: 1px solid var(--border); border-radius: 8px;
+    margin-bottom: 18px; overflow: hidden; scroll-margin-top: 20px;
+  }
+  .finding-header {
+    display: flex; align-items: center; gap: 10px; padding: 12px 16px;
+    background: var(--bg3); border-bottom: 1px solid var(--border);
+  }
+  .finding-id { font-family: monospace; font-size: 13px; color: var(--text-dim); }
+  .finding-title { font-weight: 600; flex: 1; }
+  .badge {
+    font-size: 11.5px; font-weight: 700; padding: 3px 9px; border-radius: 20px; white-space: nowrap;
+  }
+  .badge.b-red { background: rgba(248,81,73,.15); color: var(--red); border: 1px solid rgba(248,81,73,.4); }
+  .badge.b-orange { background: rgba(210,153,34,.15); color: var(--orange); border: 1px solid rgba(210,153,34,.4); }
+  .badge.b-yellow { background: rgba(227,179,65,.15); color: var(--yellow); border: 1px solid rgba(227,179,65,.4); }
+  .badge.b-green { background: rgba(63,185,80,.15); color: var(--green); border: 1px solid rgba(63,185,80,.4); }
+  .finding-body { padding: 16px; }
+  .finding-body p { margin: 0 0 10px; }
+  .finding-body strong.label { color: var(--text-dim); font-size: 12.5px; text-transform: uppercase; letter-spacing: .03em; }
+
+  .codebox { position: relative; margin: 10px 0; border-radius: 6px; overflow: hidden; border: 1px solid var(--border); }
+  .codebox .cb-label {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 6px 12px; font-size: 12px; background: var(--bg3); color: var(--text-dim);
+  }
+  .codebox.bad .cb-label { color: var(--red); }
+  .codebox.good .cb-label { color: var(--green); }
+  .codebox pre { margin: 0; padding: 12px 14px; background: #0a0d12; overflow-x: auto; font-size: 13px; }
+  .copy-btn {
+    background: var(--bg2); border: 1px solid var(--border); color: var(--text-dim);
+    font-size: 11px; padding: 3px 9px; border-radius: 5px; cursor: pointer;
+  }
+  .copy-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+  .callout { border-radius: 6px; padding: 12px 14px; margin: 10px 0; font-size: 13.8px; }
+  .callout.attack { background: rgba(248,81,73,.08); border-left: 4px solid var(--red); }
+  .callout.impact { background: rgba(210,153,34,.08); border-left: 4px solid var(--orange); }
+  .callout.fix { background: rgba(63,185,80,.08); border-left: 4px solid var(--green); }
+  .callout .callout-label { display: block; font-weight: 700; font-size: 11.5px; text-transform: uppercase; letter-spacing: .03em; margin-bottom: 4px; }
+  .callout.attack .callout-label { color: var(--red); }
+  .callout.impact .callout-label { color: var(--orange); }
+  .callout.fix .callout-label { color: var(--green); }
+
+  .smell-card .finding-body { font-family: monospace; font-size: 13.2px; }
+  .smell-field { margin-bottom: 10px; }
+  .smell-field .k { color: var(--text-dim); }
+
+  .approved-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 14px; }
+  .approved-card {
+    background: var(--bg2); border: 1px solid var(--green); border-radius: 8px; padding: 14px 16px; font-size: 13.8px;
+  }
+  .approved-card .tag { color: var(--green); font-weight: 700; font-size: 12px; text-transform: uppercase; margin-bottom: 6px; display: block; }
+
+  table.summary { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+  table.summary th, table.summary td { border: 1px solid var(--border); padding: 9px 12px; text-align: center; }
+  table.summary th { background: var(--bg3); }
+  table.summary td:first-child, table.summary th:first-child { text-align: left; }
+
+  .priority-block { border-radius: 8px; padding: 14px 18px; margin-bottom: 14px; border: 1px solid var(--border); }
+  .priority-block h4 { margin: 0 0 8px; }
+  .priority-block.pri-red { border-color: var(--red); background: rgba(248,81,73,.06); }
+  .priority-block.pri-orange { border-color: var(--orange); background: rgba(210,153,34,.06); }
+  .priority-block.pri-yellow { border-color: var(--yellow); background: rgba(227,179,65,.06); }
+  .priority-block ul { margin: 0; padding-left: 20px; }
+
+  @media (max-width: 860px) {
+    body { flex-direction: column; }
+    nav#sidebar { width: 100%; height: auto; position: relative; }
+    main { padding: 20px; }
+    .scoreboard { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="sidebar">
+  <h2>Navegação</h2>
+  <a href="#top">Cabeçalho</a>
+  <h2>Dev Sênior</h2>
+  <a href="#ds-01"><span class="sev">🔴</span> DS-01 — Links quebrados</a>
+  <a href="#ds-02"><span class="sev">🟠</span> DS-02 — Numeração quebrada</a>
+  <a href="#ds-03"><span class="sev">🟡</span> DS-03 — Metadado desatualizado</a>
+  <a href="#ds-04"><span class="sev">🟡</span> DS-04 — Duplicação normativa</a>
+  <h2>Segurança</h2>
+  <a href="#sec-ok-1"><span class="sev">🟢</span> Aprovado — sem segredo exposto</a>
+  <a href="#sec-ok-2"><span class="sev">🟢</span> Aprovado — requestState opaco</a>
+  <a href="#sec-01"><span class="sev">🟡</span> VULN-01 — aviso de segredo perdido</a>
+  <h2>Smells</h2>
+  <a href="#smell-1"><span class="sev">🔴</span> Smell 1 — Dead Reference</a>
+  <a href="#smell-2"><span class="sev">🟠</span> Smell 2 — Naming inconsistente</a>
+  <a href="#smell-3"><span class="sev">🟡</span> Smell 3 — Conteúdo duplicado</a>
+  <h2>Resumo</h2>
+  <a href="#resumo">Resumo executivo</a>
+  <a href="#aprovado">Itens aprovados</a>
+</nav>
+
+<main>
+  <header class="page-header" id="top">
+    <h1>Code Review — 00-01-pontea2a.prd.md</h1>
+    <div class="meta">Data: 2026-09-22 &nbsp;·&nbsp; Alvo: <code>documentacao-base-local/00-01-pontea2a.prd.md</code></div>
+    <div class="note-adapt">
+      <strong>Nota de adaptação:</strong> a skill <code>code-review</code> foi escrita para código Java/Spring (entidades JPA, endpoints <code>@PreAuthorize</code>, migrations), com regras de um <code>CLAUDE.md</code> que não existe neste repositório. O alvo é um PRD em Markdown de um projeto Node.js/TypeScript — não código-fonte. Os checklists literais não se aplicam; abaixo, a intenção de cada persona foi adaptada ao tipo real de artefato.
+    </div>
+  </header>
+
+  <div class="scoreboard">
+    <div class="score-card">
+      <h3>Dev Sênior</h3>
+      <div class="total">4</div>
+      <div class="score-row">
+        <span>🔴 1</span><span>🟠 1</span><span>🟡 2</span><span>🟢 0</span>
+      </div>
+    </div>
+    <div class="score-card">
+      <h3>Segurança</h3>
+      <div class="total">3</div>
+      <div class="score-row">
+        <span>🔴 0</span><span>🟠 0</span><span>🟡 1</span><span>🟢 2</span>
+      </div>
+    </div>
+    <div class="score-card">
+      <h3>Smells</h3>
+      <div class="total">3</div>
+      <div class="score-row">
+        <span>🔴 1</span><span>🟠 1</span><span>🟡 1</span><span>🟢 0</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="banner-blockers">
+    <h3>🔴 Bloqueadores</h3>
+    <ul>
+      <li><strong>DS-01 / Smell 1</strong> — links internos quebrados para os 6 arquivos renomeados com prefixo <code>00-</code>.</li>
+    </ul>
+  </div>
+
+  <section class="group" id="dev-senior">
+    <h2>1. Dev Sênior</h2>
+
+    <div class="finding" id="ds-01">
+      <div class="finding-header">
+        <span class="finding-id">DS-01</span>
+        <span class="finding-title">Cadeia de links internos quebrada por renomeação externa de 6 arquivos</span>
+        <span class="badge b-red">🔴 Crítico</span>
+      </div>
+      <div class="finding-body">
+        <p><strong class="label">Problema</strong><br>
+        Fora desta sessão de review, 6 dos 11 arquivos foram renomeados com prefixo <code>00-</code>: <code>01-pontea2a.prd.md</code> → <code>00-01-pontea2a.prd.md</code>, <code>03-adr.md</code> → <code>00-03-adr.md</code>, <code>04-specs.md</code> → <code>00-04-specs.md</code>, <code>05-contract.md</code> → <code>00-05-contract.md</code>, <code>06-stack.md</code> → <code>00-06-stack.md</code>, <code>08-readme.md</code> → <code>00-08-readme.md</code>. Todo link deste PRD para esses 6 arquivos agora resolve para "não encontrado".</p>
+        <div class="codebox bad">
+          <div class="cb-label"><span>❌ Antes (quebrado)</span><button class="copy-btn" onclick="copyBlock(this)">Copiar</button></div>
+          <pre>[03-adr.md](./03-adr.md)
+[04-specs.md](./04-specs.md)</pre>
+        </div>
+        <div class="codebox good">
+          <div class="cb-label"><span>✅ Depois — opção A (atualizar links)</span><button class="copy-btn" onclick="copyBlock(this)">Copiar</button></div>
+          <pre>[03-adr.md](./00-03-adr.md)
+[04-specs.md](./00-04-specs.md)</pre>
+        </div>
+        <div class="callout fix">
+          <span class="callout-label">Correção — opção B</span>
+          Reverter os 6 arquivos para <code>NN-nome.md</code>, restaurando a numeração 01–11 contígua. Não apliquei nenhuma das duas automaticamente — depende da intenção de quem renomeou.
+        </div>
+      </div>
+    </div>
+
+    <div class="finding" id="ds-02">
+      <div class="finding-header">
+        <span class="finding-id">DS-02</span>
+        <span class="finding-title">Numeração de leitura (macro → micro) quebrada</span>
+        <span class="badge b-orange">🟠 Alta</span>
+      </div>
+      <div class="finding-body">
+        <p><strong class="label">Problema</strong><br>
+        Ordem física atual: <code>00-01, 00-03, 00-04, 00-05, 00-06, 00-08, 02, 07, 09, 10, 11</code>. A sequência lógica (PRD → Arquitetura → ADR → Specs → Contract → Stack → Test Plan → README → Runbook → Contributing → Changelog) não é mais a ordem no disco — <code>02-architecture.md</code> deveria vir logo após o PRD, mas hoje ordena depois de <code>00-08-readme.md</code>.</p>
+        <div class="callout fix">
+          <span class="callout-label">Correção</span>
+          Mesma decisão do DS-01: normalizar os 11 arquivos para um único esquema de prefixo.
+        </div>
+      </div>
+    </div>
+
+    <div class="finding" id="ds-03">
+      <div class="finding-header">
+        <span class="finding-id">DS-03</span>
+        <span class="finding-title">Metadado de auto-referência desatualizado</span>
+        <span class="badge b-yellow">🟡 Média</span>
+      </div>
+      <div class="finding-body">
+        <p><strong class="label">Problema</strong><br>
+        Linha 3 do PRD, <code>**Documento:** 01-pontea2a.prd.md</code>, não reflete mais o nome real (<code>00-01-pontea2a.prd.md</code>).</p>
+        <div class="callout fix">
+          <span class="callout-label">Correção</span>
+          Atualizar o campo após decidir DS-01, ou remover — o nome já é visível no explorador/URL.
+        </div>
+      </div>
+    </div>
+
+    <div class="finding" id="ds-04">
+      <div class="finding-header">
+        <span class="finding-id">DS-04</span>
+        <span class="finding-title">Duplicação de conteúdo normativo entre PRD e documentos especializados</span>
+        <span class="badge b-yellow">🟡 Média</span>
+      </div>
+      <div class="finding-body">
+        <p><strong class="label">Problema</strong><br>
+        A tabela de mensagens de erro exatas (seção 10) e os payloads JSON (seções 11 e 13) existem, palavra por palavra, em <code>04-specs.md</code> e <code>05-contract.md</code>. Correções futuras precisam ser replicadas manualmente em até 3 arquivos.</p>
+        <div class="callout impact">
+          <span class="callout-label">Observação</span>
+          Trade-off já discutido e aceito com o autor (PRD "quase autossuficiente" para implementação). Sugestão não bloqueadora: marcar com <code>&lt;!-- espelhado de 04-specs.md §4.4 --&gt;</code> para reduzir risco de divergência silenciosa.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="group" id="seguranca">
+    <h2>2. Segurança</h2>
+    <p style="color:var(--text-dim); font-size:13.8px; margin-top:-8px;">Os checks SEC-01..SEC-08 do CLAUDE.md (IDOR, <code>@PreAuthorize</code>, migrations) pressupõem endpoints REST/JPA que não existem neste artefato. Abaixo, os pontos de segurança que o próprio conteúdo do PRD deveria cobrir.</p>
+
+    <div class="finding" id="sec-ok-1">
+      <div class="finding-header">
+        <span class="finding-id">SEC</span>
+        <span class="finding-title">Aprovado — nenhum segredo real exposto</span>
+        <span class="badge b-green">🟢 OK</span>
+      </div>
+      <div class="finding-body">
+        <p>O PRD nunca inclui um valor de <code>REQUEST_STATE_SECRET</code> real, apenas o comando para gerar um (seções 7 e 19). Consistente com a exigência de não commitar segredo em repositório público.</p>
+      </div>
+    </div>
+
+    <div class="finding" id="sec-ok-2">
+      <div class="finding-header">
+        <span class="finding-id">SEC</span>
+        <span class="finding-title">Aprovado — opacidade do requestState corretamente especificada</span>
+        <span class="badge b-green">🟢 OK</span>
+      </div>
+      <div class="finding-body">
+        <p>Seção 14 deixa explícito que o <code>requestState</code> nunca é exposto em card, artifact ou mensagem A2A, e que o agente nunca o interpreta.</p>
+      </div>
+    </div>
+
+    <div class="finding" id="sec-01">
+      <div class="finding-header">
+        <span class="finding-id">VULN-01</span>
+        <span class="finding-title">Aviso de "nunca versionar o segredo" perdido na condensação</span>
+        <span class="badge b-yellow">🟡 Média</span>
+      </div>
+      <div class="finding-body">
+        <p><strong class="label">Categoria</strong> Gestão de segredos (equivalente adaptado a OWASP A05 — Security Misconfiguration)</p>
+        <p><strong class="label">Onde</strong> Seção 19 ("Como rodar") do PRD, comparado com <code>00-08-readme.md</code>.</p>
+        <div class="callout attack">
+          <span class="callout-label">Cenário de ataque</span>
+          Alguém segue só a seção 19 do PRD — que promete ser "quase autossuficiente" — não vê o aviso, cria um <code>.env</code> com o segredo gerado e commita por hábito.
+        </div>
+        <div class="callout impact">
+          <span class="callout-label">Impacto</span>
+          Vazamento do segredo em repositório público, invalidando a integridade do <code>requestState</code> para qualquer entrega feita com aquele segredo.
+        </div>
+        <div class="codebox good">
+          <div class="cb-label"><span>✅ Correção</span><button class="copy-btn" onclick="copyBlock(this)">Copiar</button></div>
+          <pre>&gt; `REQUEST_STATE_SECRET` precisa estar exportado no terminal do `servidor-mcp` **antes** de subir o processo. Nunca versione o valor usado — apenas o comando para gerá-lo (o repositório é público).</pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="group" id="smells">
+    <h2>3. Smells</h2>
+
+    <div class="finding smell-card" id="smell-1">
+      <div class="finding-header">
+        <span class="finding-id">Smell 1</span>
+        <span class="finding-title">Dead Reference (equivalente a Dead Code)</span>
+        <span class="badge b-red">🔴 Crítico</span>
+      </div>
+      <div class="finding-body">
+        <div class="smell-field"><span class="k">Tipo:</span> Documentação obsoleta / referência morta</div>
+        <div class="smell-field"><span class="k">Problema:</span> 6 links markdown apontando para arquivos que não existem mais em disco (mesma causa raiz de DS-01).</div>
+        <div class="smell-field"><span class="k">Antes:</span> <code>[04-specs.md](./04-specs.md)</code></div>
+        <div class="smell-field"><span class="k">Depois:</span> <code>[04-specs.md](./00-04-specs.md)</code> — ou reverter a renomeação.</div>
+      </div>
+    </div>
+
+    <div class="finding smell-card" id="smell-2">
+      <div class="finding-header">
+        <span class="finding-id">Smell 2</span>
+        <span class="finding-title">Inconsistent Naming</span>
+        <span class="badge b-orange">🟠 Alta</span>
+      </div>
+      <div class="finding-body">
+        <div class="smell-field"><span class="k">Tipo:</span> Convenção de nomenclatura</div>
+        <div class="smell-field"><span class="k">Problema:</span> 6 de 11 arquivos com prefixo duplo <code>00-NN-</code>, os outros 5 com <code>NN-</code> simples.</div>
+        <div class="smell-field"><span class="k">Antes:</span> <code>00-01-pontea2a.prd.md</code>, <code>02-architecture.md</code></div>
+        <div class="smell-field"><span class="k">Depois:</span> um padrão único, ex. <code>01-pontea2a.prd.md</code>, <code>02-architecture.md</code></div>
+      </div>
+    </div>
+
+    <div class="finding smell-card" id="smell-3">
+      <div class="finding-header">
+        <span class="finding-id">Smell 3</span>
+        <span class="finding-title">Conteúdo duplicado entre documentos</span>
+        <span class="badge b-yellow">🟡 Média</span>
+      </div>
+      <div class="finding-body">
+        <div class="smell-field"><span class="k">Tipo:</span> Duplicação (equivalente a Código Duplicado)</div>
+        <div class="smell-field"><span class="k">Problema:</span> mesmo caso de DS-04 — tabelas e payloads JSON replicados byte a byte em 3 arquivos.</div>
+        <div class="smell-field"><span class="k">Correção:</span> ver DS-04.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="group" id="resumo">
+    <h2>Resumo Executivo</h2>
+    <table class="summary">
+      <thead><tr><th>Categoria</th><th>Total</th><th>🔴</th><th>🟠</th><th>🟡</th><th>🟢</th></tr></thead>
+      <tbody>
+        <tr><td>Dev Sênior</td><td>4</td><td>1</td><td>1</td><td>2</td><td>0</td></tr>
+        <tr><td>Segurança</td><td>3</td><td>0</td><td>0</td><td>1</td><td>2</td></tr>
+        <tr><td>Smells</td><td>3</td><td>1</td><td>1</td><td>1</td><td>0</td></tr>
+      </tbody>
+    </table>
+
+    <div class="priority-block pri-red">
+      <h4>🔴 Bloqueadores</h4>
+      <ul><li><strong>DS-01 / Smell 1</strong> — links internos quebrados para 6 arquivos renomeados (mesma causa raiz, duas lentes).</li></ul>
+    </div>
+    <div class="priority-block pri-orange">
+      <h4>🟠 Alta prioridade</h4>
+      <ul><li><strong>DS-02 / Smell 2</strong> — numeração de leitura quebrada; convenção de nomenclatura inconsistente. Corrigir junto com o bloqueador, na mesma decisão.</li></ul>
+    </div>
+    <div class="priority-block pri-yellow">
+      <h4>🟡 Média prioridade</h4>
+      <ul>
+        <li><strong>DS-03</strong> — metadado de auto-referência desatualizado.</li>
+        <li><strong>DS-04 / Smell 3</strong> — duplicação de conteúdo normativo (aceito como trade-off).</li>
+        <li><strong>VULN-01</strong> — aviso de "não versionar o segredo" ausente na seção 19 do PRD.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="group" id="aprovado">
+    <h2>Aprovado</h2>
+    <div class="approved-grid">
+      <div class="approved-card"><span class="tag">✓ Consistência factual</span>Conteúdo técnico do PRD (portas, mensagens de erro, payloads, variáveis de ambiente) verificado consistente com specs, contract, stack e ADRs — nenhuma divergência factual, só de caminho de arquivo.</div>
+      <div class="approved-card"><span class="tag">✓ Segredos</span>Nenhum segredo real exposto em nenhuma seção do documento.</div>
+      <div class="approved-card"><span class="tag">✓ Opacidade</span><code>requestState</code> especificado corretamente como opaco ao agente, coerente com a restrição do enunciado original.</div>
+    </div>
+  </section>
+</main>
+
+<script>
+function copyBlock(btn) {
+  const pre = btn.closest('.codebox').querySelector('pre');
+  navigator.clipboard.writeText(pre.textContent).then(() => {
+    const old = btn.textContent;
+    btn.textContent = 'Copiado!';
+    setTimeout(() => { btn.textContent = old; }, 1500);
+  });
+}
+</script>
+</body>
+</html>

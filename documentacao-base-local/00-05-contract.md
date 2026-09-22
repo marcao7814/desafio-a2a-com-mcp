@@ -1,7 +1,7 @@
 # Contrato de Wire — MCP e A2A
 
-**Documento:** 05-contract.md
-**Depende de:** [04-specs.md](./04-specs.md)
+**Documento:** 00-05-contract.md
+**Depende de:** [04-specs.md](./00-04-specs.md)
 **Fonte fiel:** `exemplos/wire/*.json` (imutável) — este documento resume e indexa; em caso de divergência, os arquivos de exemplo do starter prevalecem.
 
 ## 1. Convenções gerais
@@ -41,7 +41,7 @@ Request sem parâmetros (além de `_meta`). Response: array das 3 tools, cada um
 ### 2.3 `consultar_disponibilidade`
 - `inputSchema`: `{ sala: string, inicio: string(iso8601), fim: string(iso8601) }`, todos obrigatórios.
 - Retorno (`structuredContent`): `{ livre: boolean, conflitos?: Reserva[] }`.
-- Aplica as mesmas validações de sala/política que `reservar_sala` — mesmas mensagens de erro (ver [04-specs.md §4.4](./04-specs.md#44-regras-de-validação-e-mensagens-de-erro-fonte-única-de-verdade)).
+- Aplica as mesmas validações de sala/política que `reservar_sala` — mesmas mensagens de erro (ver [04-specs.md §4.4](./00-04-specs.md#44-regras-de-validação-e-mensagens-de-erro-fonte-única-de-verdade)).
 
 ### 2.4 `reservar_sala` — caminho feliz
 - `inputSchema`: `{ sala, inicio, fim, responsavel }` (todos string, obrigatórios).

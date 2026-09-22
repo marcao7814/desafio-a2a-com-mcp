@@ -27,7 +27,7 @@ Siga a "Ordem de execução sugerida" do enunciado (resumida):
 
 ## 4. Antes de cada commit
 - Rodar `python3 validador/validar.py --agente http://localhost:7300 --mcp http://localhost:7301` com os processos recém-iniciados.
-- Conferir que nenhuma mensagem de erro de negócio foi alterada (texto exato — ver [05-contract.md §2.8](./05-contract.md#28-tabela-de-erros-mcp) e [04-specs.md §4.4](./04-specs.md#44-regras-de-validação-e-mensagens-de-erro-fonte-única-de-verdade)).
+- Conferir que nenhuma mensagem de erro de negócio foi alterada (texto exato — ver [05-contract.md §2.8](./00-05-contract.md#28-tabela-de-erros-mcp) e [04-specs.md §4.4](./00-04-specs.md#44-regras-de-validação-e-mensagens-de-erro-fonte-única-de-verdade)).
 - Conferir que `git status` não lista arquivos em `dados/`, `validador/` ou `exemplos/`.
 - Nunca commitar o valor real de `REQUEST_STATE_SECRET`.
 
@@ -36,7 +36,7 @@ Siga a "Ordem de execução sugerida" do enunciado (resumida):
 - TypeScript estrito (`strict: true` no `tsconfig.json`).
 - Sem comentários explicando o óbvio; comentar apenas decisões não óbvias (ex.: por que um valor de expiração específico foi escolhido).
 - Sem abstrações antecipadas — o domínio é deliberadamente simples (5 salas, 3 regras); não introduzir ORM, camada de serviços ou banco de dados.
-- Decisões arquiteturais relevantes (novas ou revisadas) devem virar um novo ADR em [03-adr.md](./03-adr.md), não apenas um comentário no código.
+- Decisões arquiteturais relevantes (novas ou revisadas) devem virar um novo ADR em [03-adr.md](./00-03-adr.md), não apenas um comentário no código.
 
 ## 6. Antes do push final
 Checklist mínimo (ver detalhamento completo em [07-testplan.md](./07-testplan.md)):

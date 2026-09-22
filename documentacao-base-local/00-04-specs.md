@@ -1,7 +1,7 @@
 # Especificação Técnica — A Ponte (MCP + A2A)
 
-**Documento:** 04-specs.md
-**Depende de:** [02-architecture.md](./02-architecture.md), [03-adr.md](./03-adr.md)
+**Documento:** 00-04-specs.md
+**Depende de:** [02-architecture.md](./02-architecture.md), [03-adr.md](./00-03-adr.md)
 **Fonte normativa:** [solicitacao.md](./solicitacao.md) — em caso de conflito, o enunciado original prevalece.
 
 ## 1. Visão geral da arquitetura
@@ -43,7 +43,7 @@ Portas parametrizáveis por variável de ambiente, com esses valores como defaul
 - `dados/reservas.json` — reservas seed (`id`, `sala`, `inicio`, `fim`, `responsavel`).
 - `dados/politica-de-uso.md` — primeira linha `versao: <data>`; regras: janela 08:00–20:00 (-03:00), duração máxima 2h, sem sobreposição por sala.
 
-Esses arquivos não podem ser alterados. O servidor MCP os lê no boot e/ou por request; a persistência de reservas criadas em runtime é em memória do processo do servidor MCP (ver [03-adr.md ADR-0005](./03-adr.md#adr-0005--persistência-em-memória-sem-banco-de-dados)).
+Esses arquivos não podem ser alterados. O servidor MCP os lê no boot e/ou por request; a persistência de reservas criadas em runtime é em memória do processo do servidor MCP (ver [03-adr.md ADR-0005](./00-03-adr.md#adr-0005--persistência-em-memória-sem-banco-de-dados)).
 
 ## 4. Servidor MCP
 
@@ -60,7 +60,7 @@ Esses arquivos não podem ser alterados. O servidor MCP os lê no boot e/ou por 
 | `consultar_disponibilidade` | `sala`, `inicio`, `fim` | livre/ocupado + reservas em conflito; mesmas validações de `reservar_sala` |
 | `reservar_sala` | `sala`, `inicio`, `fim`, `responsavel` | reserva criada (caminho livre) ou `input_required` (conflito) |
 
-Todas com `inputSchema` JSON Schema válido. `reservar_sala` concluída retorna em `structuredContent`: `reserva`, `reservado`, `sala`, `inicio`, `fim`, `responsavel`, `politica` (ver [05-contract.md](./05-contract.md)).
+Todas com `inputSchema` JSON Schema válido. `reservar_sala` concluída retorna em `structuredContent`: `reserva`, `reservado`, `sala`, `inicio`, `fim`, `responsavel`, `politica` (ver [05-contract.md](./00-05-contract.md)).
 
 ### 4.3 Resource
 - URI `politica://uso`, `mimeType: text/markdown`, conteúdo = `dados/politica-de-uso.md` literal.
@@ -102,7 +102,7 @@ Cada request registrado em stderr com, no mínimo: método, id, `traceparent` (q
 2. `inputRequests`: mapa de uma entrada só, chave gerada pelo servidor, valor = request `elicitation/create` em `mode: "form"`.
 3. `requestedSchema`: objeto plano, propriedade `sala` (string), `enum` com as alternativas (ou `const` se houver só uma).
 4. Sem alternativa → sem elicitation; `isError: true` com `Sem alternativas disponiveis no intervalo`.
-5. `requestState`: protegido por HMAC ou AEAD (assinatura obrigatória, cifra opcional), expiração entre 5 e 30 minutos, contém tudo que o servidor precisa para reconstruir o pedido — **nenhum estado em memória do servidor entre `input_required` e o retry**. Precisa funcionar após restart do processo (ver [03-adr.md ADR-0003](./03-adr.md#adr-0003--proteção-do-requeststate-com-hmac-sha256-stateless)).
+5. `requestState`: protegido por HMAC ou AEAD (assinatura obrigatória, cifra opcional), expiração entre 5 e 30 minutos, contém tudo que o servidor precisa para reconstruir o pedido — **nenhum estado em memória do servidor entre `input_required` e o retry**. Precisa funcionar após restart do processo (ver [03-adr.md ADR-0003](./00-03-adr.md#adr-0003--proteção-do-requeststate-com-hmac-sha256-stateless)).
 6. Chave de integridade: variável de ambiente `REQUEST_STATE_SECRET`, ≥32 bytes de aleatoriedade, nunca hardcoded.
 7. `requestState` adulterado ou expirado → `-32602`.
 8. No retry, argumentos reenviados pelo cliente não são confiáveis: divergência do que foi selado não pode ter efeito (rejeitar ou usar valores selados — ambos aceitos).
@@ -130,7 +130,7 @@ Cada request registrado em stderr com, no mínimo: método, id, `traceparent` (q
 
 ## 8. A ponte
 
-Esta é a seção mais crítica — ver também [05-contract.md](./05-contract.md) para os payloads exatos.
+Esta é a seção mais crítica — ver também [05-contract.md](./00-05-contract.md) para os payloads exatos.
 
 - `input_required` (MCP) → `TASK_STATE_INPUT_REQUIRED` (A2A). Mensagem de texto da Task = **exatamente** `alternativas: <ids separados por virgula e espaco>`, na ordem do `enum`. Sem prefixo, sem saudação (comparação byte a byte pelo avaliador).
 - `requestState` fica guardado no agente, associado à Task — nunca exposto em card, artifact ou mensagem A2A. **Opaco**: o agente nunca abre, interpreta ou reconstrói o conteúdo.
@@ -158,4 +158,4 @@ Esta é a seção mais crítica — ver também [05-contract.md](./05-contract.m
 6. Limitação real de SDK → documentar no README com evidência, nunca contornar reescrevendo o protocolo.
 
 ## 11. Fora de escopo
-Ver [01-pontea2a.prd.md §22](./01-pontea2a.prd.md#22-fora-de-escopo).
+Ver [01-pontea2a.prd.md §22](./00-01-pontea2a.prd.md#22-fora-de-escopo).

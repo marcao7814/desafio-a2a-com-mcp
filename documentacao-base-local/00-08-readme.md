@@ -1,6 +1,6 @@
 # README (rascunho de entrega)
 
-**Documento:** 08-readme.md
+**Documento:** 00-08-readme.md
 **Status:** Rascunho — este conteúdo deve substituir o `README.md` da raiz do fork quando `servidor-mcp/` e `agente/` estiverem implementados. Os trechos marcados `TODO` dependem de código ainda não escrito.
 
 ---
@@ -39,11 +39,11 @@ TODO — após a implementação, apontar aqui:
 - O ponto exato do código do agente em que o `input_required` recebido do servidor MCP é traduzido para `TASK_STATE_INPUT_REQUIRED` (arquivo:linha).
 - O ponto exato em que o `requestState` guardado é reenviado ao servidor MCP no retry (arquivo:linha).
 
-Ver o desenho conceitual dessa fronteira em [04-specs.md §8](./04-specs.md#8-a-ponte) e nos componentes "Tradutor da Ponte" / "Store de Tasks" de [02-architecture.md §3.2](./02-architecture.md#32-componentes-do-agente).
+Ver o desenho conceitual dessa fronteira em [04-specs.md §8](./00-04-specs.md#8-a-ponte) e nos componentes "Tradutor da Ponte" / "Store de Tasks" de [02-architecture.md §3.2](./02-architecture.md#32-componentes-do-agente).
 
 ## Decisões técnicas
 
-- **Proteção do `requestState`**: HMAC-SHA256 via `node:crypto`, chave de `REQUEST_STATE_SECRET` (≥32 bytes) — ver [03-adr.md ADR-0003](./03-adr.md#adr-0003--proteção-do-requeststate-com-hmac-sha256-stateless). TODO: confirmar biblioteca final e detalhar o payload assinado.
+- **Proteção do `requestState`**: HMAC-SHA256 via `node:crypto`, chave de `REQUEST_STATE_SECRET` (≥32 bytes) — ver [03-adr.md ADR-0003](./00-03-adr.md#adr-0003--proteção-do-requeststate-com-hmac-sha256-stateless). TODO: confirmar biblioteca final e detalhar o payload assinado.
 - **Expiração**: TODO — definir valor exato dentro da janela de 5–30 minutos exigida pelo enunciado.
 - **Onde fica o estado das Tasks**: em memória, no processo do agente, indexado por `taskId`.
 

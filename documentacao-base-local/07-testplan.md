@@ -1,7 +1,7 @@
 # Plano de Testes
 
 **Documento:** 07-testplan.md
-**Depende de:** [04-specs.md](./04-specs.md), [05-contract.md](./05-contract.md)
+**Depende de:** [04-specs.md](./00-04-specs.md), [05-contract.md](./00-05-contract.md)
 
 ## 1. Objetivo
 Garantir que os dois processos passem nas 36 verificações de `validador/validar.py` e em toda a checklist de Critérios de Aceite do enunciado, a partir de um clone limpo do fork.

@@ -1,7 +1,7 @@
 # Runbook Operacional
 
 **Documento:** 09-runbook.md
-**Depende de:** [06-stack.md](./06-stack.md), [08-readme.md](./08-readme.md)
+**Depende de:** [06-stack.md](./00-06-stack.md), [08-readme.md](./00-08-readme.md)
 
 ## 1. Escopo
 Procedimentos operacionais para subir, verificar, depurar e reiniciar os dois processos do desafio (`servidor-mcp` e `agente`) em ambiente local de desenvolvimento/avaliação. Não cobre deploy, orquestração ou produção (fora de escopo do desafio).
@@ -56,7 +56,7 @@ lsof -ti:7300 | xargs kill   # agente
 
 | Sintoma | Causa provável | Onde olhar |
 |---|---|---|
-| Erro "transporte não tem canal de volta" | Tentativa de callback síncrono do servidor para o cliente em vez de `input_required`/MRTR | Implementação de `reservar_sala` no servidor MCP — ver [03-adr.md ADR-0004](./03-adr.md#adr-0004--mrtr-nativo-do-sdk-nunca-callback-síncrono-de-elicitation) |
+| Erro "transporte não tem canal de volta" | Tentativa de callback síncrono do servidor para o cliente em vez de `input_required`/MRTR | Implementação de `reservar_sala` no servidor MCP — ver [03-adr.md ADR-0004](./00-03-adr.md#adr-0004--mrtr-nativo-do-sdk-nunca-callback-síncrono-de-elicitation) |
 | `-32021` inesperado | Cliente (agente) não está declarando `elicitation.form` no `_meta` de todo request | `_meta.clientCapabilities` no client MCP do agente |
 | `-32020` | Header HTTP (`Mcp-Method`/`Mcp-Name`) não bate com o corpo do request | Camada de transporte HTTP do cliente MCP |
 | `-32602` no retry | `requestState` adulterado, expirado, ou ausente no payload | Serialização/echo do `requestState` no agente |
@@ -74,4 +74,4 @@ Se `REQUEST_STATE_SECRET` precisar ser trocado (ex.: suspeita de vazamento):
 3. Qualquer `requestState` emitido com o segredo antigo passa a falhar a verificação de integridade (`-32602`) — comportamento esperado, não é um bug.
 
 ## 10. Limitações conhecidas de SDK
-Se durante a implementação for identificada uma limitação real do SDK MCP/A2A escolhido que impeça algum requisito, documentar aqui e em [08-readme.md](./08-readme.md) com o trecho de evidência — nunca contornar reescrevendo o protocolo (restrição não negociável, ver [04-specs.md §10](./04-specs.md#10-restrições-não-negociáveis)).
+Se durante a implementação for identificada uma limitação real do SDK MCP/A2A escolhido que impeça algum requisito, documentar aqui e em [08-readme.md](./00-08-readme.md) com o trecho de evidência — nunca contornar reescrevendo o protocolo (restrição não negociável, ver [04-specs.md §10](./00-04-specs.md#10-restrições-não-negociáveis)).

@@ -1,8 +1,8 @@
 # Arquitetura — Modelo C4
 
 **Documento:** 02-architecture.md
-**Depende de:** [01-pontea2a.prd.md](./01-pontea2a.prd.md)
-**Detalhamento técnico:** [04-specs.md](./04-specs.md), [05-contract.md](./05-contract.md)
+**Depende de:** [01-pontea2a.prd.md](./00-01-pontea2a.prd.md)
+**Detalhamento técnico:** [04-specs.md](./00-04-specs.md), [05-contract.md](./00-05-contract.md)
 
 Este documento cobre os três primeiros níveis do modelo C4 (Contexto, Container, Componente). O nível 4 (Código) não se aplica — o domínio é deliberadamente pequeno (5 salas, 3 regras) e o código-fonte é a própria documentação de nível 4.
 
@@ -31,7 +31,7 @@ C4Context
     Rel(mcp, dados, "lê no boot / por request")
 ```
 
-**Leitura**: de fora, "A Ponte" é opaca — um cliente A2A não sabe (nem precisa saber) que por trás da skill `reservar-sala` existe um agente que por sua vez fala com um servidor MCP. Essa opacidade é requisito de produto (ver [01-pontea2a.prd.md §20](./01-pontea2a.prd.md#20-as-três-fricções-propositais-riscos-de-execução-conhecidos)).
+**Leitura**: de fora, "A Ponte" é opaca — um cliente A2A não sabe (nem precisa saber) que por trás da skill `reservar-sala` existe um agente que por sua vez fala com um servidor MCP. Essa opacidade é requisito de produto (ver [01-pontea2a.prd.md §20](./00-01-pontea2a.prd.md#20-as-três-fricções-propositais-riscos-de-execução-conhecidos)).
 
 ## 2. Nível 2 — Container
 
@@ -121,8 +121,8 @@ C4Component
 
 ## 4. Decisões de arquitetura derivadas
 
-As decisões que sustentam este desenho (por que HMAC e não apenas base64, por que dois processos, por que sem callback síncrono) estão registradas formalmente em [03-adr.md](./03-adr.md).
+As decisões que sustentam este desenho (por que HMAC e não apenas base64, por que dois processos, por que sem callback síncrono) estão registradas formalmente em [03-adr.md](./00-03-adr.md).
 
 ## 5. Fora de escopo arquitetural
 
-Sem gateway, sem service mesh, sem banco de dados, sem fila de mensagens, sem container/orquestração — ver [01-pontea2a.prd.md §22](./01-pontea2a.prd.md#22-fora-de-escopo).
+Sem gateway, sem service mesh, sem banco de dados, sem fila de mensagens, sem container/orquestração — ver [01-pontea2a.prd.md §22](./00-01-pontea2a.prd.md#22-fora-de-escopo).

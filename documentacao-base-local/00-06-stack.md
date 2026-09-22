@@ -1,8 +1,8 @@
 # Stack Tecnológica
 
-**Documento:** 06-stack.md
-**Depende de:** [04-specs.md](./04-specs.md), [05-contract.md](./05-contract.md)
-**Decisão registrada em:** [03-adr.md ADR-0001](./03-adr.md#adr-0001--stack-de-implementação-nodejs-20-typescript)
+**Documento:** 00-06-stack.md
+**Depende de:** [04-specs.md](./00-04-specs.md), [05-contract.md](./00-05-contract.md)
+**Decisão registrada em:** [03-adr.md ADR-0001](./00-03-adr.md#adr-0001--stack-de-implementação-nodejs-20-typescript)
 
 Node.js 20+ / TypeScript para os dois processos (`servidor-mcp/` e `agente/`). A escolha não influencia a nota do desafio; registrada aqui para manter os dois projetos consistentes.
 
@@ -13,11 +13,11 @@ Node.js 20+ / TypeScript para os dois processos (`servidor-mcp/` e `agente/`). A
 ## 2. SDK MCP
 - Pacote oficial do MCP para Node.js, v2, alinhado à revisão de spec 2026-07-28 (o enunciado o nomeia como `@modelcontextprotocol/server`; **confirmar o nome exato publicado no npm no momento da implementação**, pode ter mudado para `@modelcontextprotocol/sdk` ou correlato — travar a versão exata em `package.json`/`package-lock.json` assim que confirmado).
 - Usar o transporte Streamable HTTP embutido do SDK.
-- Usar o mecanismo nativo de `input_required`/MRTR do SDK — não o callback síncrono de elicitation (ver [03-adr.md ADR-0004](./03-adr.md#adr-0004--mrtr-nativo-do-sdk-nunca-callback-síncrono-de-elicitation)).
+- Usar o mecanismo nativo de `input_required`/MRTR do SDK — não o callback síncrono de elicitation (ver [03-adr.md ADR-0004](./00-03-adr.md#adr-0004--mrtr-nativo-do-sdk-nunca-callback-síncrono-de-elicitation)).
 
 ## 3. Camada A2A
 - Não há SDK oficial exigido para A2A v1.0 — é JSON-RPC 2.0 puro sobre HTTP.
-- Implementação própria: um handler HTTP simples (Fastify, ver [03-adr.md ADR-0006](./03-adr.md#adr-0006--camada-a2a-implementada-diretamente-sobre-json-rpc-sem-sdk-dedicado)) expondo `/a2a` (JSON-RPC) e `/.well-known/agent-card.json` (JSON estático/dinâmico).
+- Implementação própria: um handler HTTP simples (Fastify, ver [03-adr.md ADR-0006](./00-03-adr.md#adr-0006--camada-a2a-implementada-diretamente-sobre-json-rpc-sem-sdk-dedicado)) expondo `/a2a` (JSON-RPC) e `/.well-known/agent-card.json` (JSON estático/dinâmico).
 - Express é alternativa aceitável a Fastify — decisão não crítica, desde que suporte JSON body parsing e roteamento simples.
 
 ## 4. Cliente MCP (dentro do agente)
@@ -52,4 +52,4 @@ Node.js 20+ / TypeScript para os dois processos (`servidor-mcp/` e `agente/`). A
 | `MCP_SERVER_URL` | agente | Não (default `http://localhost:7301/mcp`) | URL do servidor MCP consumido pelo agente |
 
 ## 10. Fora do escopo da stack
-Sem ORM, sem banco de dados, sem LLM SDK, sem OpenTelemetry, sem container/orquestração (ver restrições em [04-specs.md §10-11](./04-specs.md#10-restrições-não-negociáveis)).
+Sem ORM, sem banco de dados, sem LLM SDK, sem OpenTelemetry, sem container/orquestração (ver restrições em [04-specs.md §10-11](./00-04-specs.md#10-restrições-não-negociáveis)).

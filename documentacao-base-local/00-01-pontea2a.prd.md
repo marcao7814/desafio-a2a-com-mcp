@@ -1,6 +1,6 @@
 # PRD — A Ponte: um agente A2A com MCP por dentro
 
-**Documento:** 01-pontea2a.prd.md
+**Documento:** 00-01-pontea2a.prd.md
 **Fonte:** [solicitacao.md](./solicitacao.md)
 **Status:** Aprovado para implementação
 **Stack definida:** Node.js 20+ / TypeScript
@@ -60,7 +60,7 @@ Cliente A2A                Agente (host MCP + servidor A2A)             Servidor
    |<--- Task COMPLETED + artifact reserva |                                     |
 ```
 
-Dois processos independentes, comunicação exclusivamente por HTTP real (nunca chamada de função direta entre eles). Diagramas C4 completos (Contexto, Container, Componente) em [02-architecture.md](./02-architecture.md); racional de cada decisão estrutural em [03-adr.md](./03-adr.md).
+Dois processos independentes, comunicação exclusivamente por HTTP real (nunca chamada de função direta entre eles). Diagramas C4 completos (Contexto, Container, Componente) em [02-architecture.md](./02-architecture.md); racional de cada decisão estrutural em [03-adr.md](./00-03-adr.md).
 
 ## 7. Portas, endpoints e variáveis de ambiente
 
@@ -104,7 +104,7 @@ Resource: URI `politica://uso`, `mimeType: text/markdown`, conteúdo = `dados/po
 
 Logging: cada request registrado em stderr com, no mínimo, método, id e `traceparent` (quando presente em `_meta`). Nunca usar API de logging depreciada do SDK.
 
-Schemas JSON completos e exemplos de payload em [05-contract.md §2](./05-contract.md#2-contratos-mcp).
+Schemas JSON completos e exemplos de payload em [05-contract.md §2](./00-05-contract.md#2-contratos-mcp).
 
 ## 10. Regras de negócio e mensagens de erro exatas (fonte única de verdade)
 
@@ -180,7 +180,7 @@ Schemas JSON completos e exemplos de payload em [05-contract.md §2](./05-contra
 }
 ```
 
-Contratos completos em [05-contract.md §2.5-2.6](./05-contract.md#25-reservar_sala--conflito-input_required).
+Contratos completos em [05-contract.md §2.5-2.6](./00-05-contract.md#25-reservar_sala--conflito-input_required).
 
 ## 12. Agente como host MCP
 
@@ -205,7 +205,7 @@ Contratos completos em [05-contract.md §2.5-2.6](./05-contract.md#25-reservar_s
 { "name": "reserva", "parts": [{ "text": "{\"reserva\":\"res-0003\",\"sala\":\"sala-fusca\",\"inicio\":\"2026-11-03T14:00:00-03:00\",\"fim\":\"2026-11-03T15:00:00-03:00\",\"responsavel\":\"Marty\",\"politica\":\"2026-11-01\"}" }] }
 ```
 
-Contratos completos (`SendMessage`, `GetTask`, Agent Card) em [05-contract.md §3](./05-contract.md#3-contratos-a2a).
+Contratos completos (`SendMessage`, `GetTask`, Agent Card) em [05-contract.md §3](./00-05-contract.md#3-contratos-a2a).
 
 ## 14. A ponte — mapeamento exato
 
@@ -239,15 +239,15 @@ Contratos completos (`SendMessage`, `GetTask`, Agent Card) em [05-contract.md §
 
 | ADR | Decisão |
 |---|---|
-| [ADR-0001](./03-adr.md#adr-0001--stack-de-implementação-nodejs-20-typescript) | Node.js 20+ / TypeScript nos dois processos |
-| [ADR-0002](./03-adr.md#adr-0002--dois-processos-separados-comunicação-exclusivamente-por-http) | Dois processos separados, comunicação exclusivamente por HTTP |
-| [ADR-0003](./03-adr.md#adr-0003--proteção-do-requeststate-com-hmac-sha256-stateless) | `requestState` assinado com HMAC-SHA256, servidor genuinamente stateless entre `input_required` e o retry |
-| [ADR-0004](./03-adr.md#adr-0004--mrtr-nativo-do-sdk-nunca-callback-síncrono-de-elicitation) | MRTR nativo do SDK (`input_required`/`inputRequired`), nunca callback síncrono de elicitation |
-| [ADR-0005](./03-adr.md#adr-0005--persistência-em-memória-sem-banco-de-dados) | Persistência em memória (`Map`), sem banco de dados |
-| [ADR-0006](./03-adr.md#adr-0006--camada-a2a-implementada-diretamente-sobre-json-rpc-sem-sdk-dedicado) | Camada A2A implementada direto sobre JSON-RPC 2.0 (Fastify), sem SDK A2A dedicado |
-| [ADR-0007](./03-adr.md#adr-0007--logging-mínimo-em-stderr-sem-opentelemetry) | Logging mínimo em stderr, sem OpenTelemetry |
+| [ADR-0001](./00-03-adr.md#adr-0001--stack-de-implementação-nodejs-20-typescript) | Node.js 20+ / TypeScript nos dois processos |
+| [ADR-0002](./00-03-adr.md#adr-0002--dois-processos-separados-comunicação-exclusivamente-por-http) | Dois processos separados, comunicação exclusivamente por HTTP |
+| [ADR-0003](./00-03-adr.md#adr-0003--proteção-do-requeststate-com-hmac-sha256-stateless) | `requestState` assinado com HMAC-SHA256, servidor genuinamente stateless entre `input_required` e o retry |
+| [ADR-0004](./00-03-adr.md#adr-0004--mrtr-nativo-do-sdk-nunca-callback-síncrono-de-elicitation) | MRTR nativo do SDK (`input_required`/`inputRequired`), nunca callback síncrono de elicitation |
+| [ADR-0005](./00-03-adr.md#adr-0005--persistência-em-memória-sem-banco-de-dados) | Persistência em memória (`Map`), sem banco de dados |
+| [ADR-0006](./00-03-adr.md#adr-0006--camada-a2a-implementada-diretamente-sobre-json-rpc-sem-sdk-dedicado) | Camada A2A implementada direto sobre JSON-RPC 2.0 (Fastify), sem SDK A2A dedicado |
+| [ADR-0007](./00-03-adr.md#adr-0007--logging-mínimo-em-stderr-sem-opentelemetry) | Logging mínimo em stderr, sem OpenTelemetry |
 
-Contexto, decisão e consequências completos de cada ADR em [03-adr.md](./03-adr.md).
+Contexto, decisão e consequências completos de cada ADR em [03-adr.md](./00-03-adr.md).
 
 ## 18. Stack tecnológica (resumo executável)
 
@@ -259,7 +259,7 @@ Contexto, decisão e consequências completos de cada ADR em [03-adr.md](./03-ad
 - **Empacotamento**: dois `package.json` independentes (`servidor-mcp/`, `agente/`), `package-lock.json` com versões travadas nas dependências centrais.
 - **Testes**: `python3 validador/validar.py` é a fonte de verdade da conformidade; `node:test` (built-in) opcional para lógica de política isolada.
 
-Detalhamento completo em [06-stack.md](./06-stack.md).
+Detalhamento completo em [06-stack.md](./00-06-stack.md).
 
 ## 19. Como rodar (comandos)
 
@@ -285,9 +285,9 @@ Runbook completo (verificações de saúde, restart, depuração por sintoma, ro
 
 ## 20. As três fricções propositais (riscos de execução conhecidos)
 
-1. **Sem canal de volta no transporte stateless** — tentar callback síncrono do servidor para o cliente falha com um erro explícito. Solução: usar o mecanismo de MRTR/`input_required` nativo do SDK, não um callback de elicitation síncrono ([ADR-0004](./03-adr.md#adr-0004--mrtr-nativo-do-sdk-nunca-callback-síncrono-de-elicitation)).
+1. **Sem canal de volta no transporte stateless** — tentar callback síncrono do servidor para o cliente falha com um erro explícito. Solução: usar o mecanismo de MRTR/`input_required` nativo do SDK, não um callback de elicitation síncrono ([ADR-0004](./00-03-adr.md#adr-0004--mrtr-nativo-do-sdk-nunca-callback-síncrono-de-elicitation)).
 2. **Elicitation exige capability declarada** — cliente sem `io.modelcontextprotocol/clientCapabilities.elicitation.form` recebe `-32021`.
-3. **`requestState` é entrada controlada por atacante** — precisa de HMAC/AEAD real, não apenas um JSON em base64 sem assinatura ([ADR-0003](./03-adr.md#adr-0003--proteção-do-requeststate-com-hmac-sha256-stateless)).
+3. **`requestState` é entrada controlada por atacante** — precisa de HMAC/AEAD real, não apenas um JSON em base64 sem assinatura ([ADR-0003](./00-03-adr.md#adr-0003--proteção-do-requeststate-com-hmac-sha256-stateless)).
 
 ## 21. Critérios de sucesso / aceite
 
@@ -310,12 +310,12 @@ Autenticação/autorização, streaming (`SendStreamingMessage`/SSE/push notific
 | Documento | Conteúdo | Consultado nesta versão |
 |---|---|---|
 | [02-architecture.md](./02-architecture.md) | Modelo C4 (Contexto, Container, Componente) | ✅ diagrama macro refletido na seção 6 |
-| [03-adr.md](./03-adr.md) | 7 ADRs com contexto/decisão/consequências | ✅ resumido na seção 17 |
-| [04-specs.md](./04-specs.md) | Especificação técnica completa | ✅ base das seções 6-16 |
-| [05-contract.md](./05-contract.md) | Contratos de wire exatos (MCP e A2A) | ✅ payloads-chave nas seções 11 e 13 |
-| [06-stack.md](./06-stack.md) | Stack tecnológica detalhada | ✅ resumida na seção 18 |
+| [03-adr.md](./00-03-adr.md) | 7 ADRs com contexto/decisão/consequências | ✅ resumido na seção 17 |
+| [04-specs.md](./00-04-specs.md) | Especificação técnica completa | ✅ base das seções 6-16 |
+| [05-contract.md](./00-05-contract.md) | Contratos de wire exatos (MCP e A2A) | ✅ payloads-chave nas seções 11 e 13 |
+| [06-stack.md](./00-06-stack.md) | Stack tecnológica detalhada | ✅ resumida na seção 18 |
 | [07-testplan.md](./07-testplan.md) | 37 casos de teste + roteiro manual | ✅ referenciado na seção 21 |
-| [08-readme.md](./08-readme.md) | Rascunho do README de entrega | ✅ comandos replicados na seção 19 |
+| [08-readme.md](./00-08-readme.md) | Rascunho do README de entrega | ✅ comandos replicados na seção 19 |
 | [09-runbook.md](./09-runbook.md) | Runbook operacional | ✅ referenciado na seção 19 |
 | [10-contributing.md](./10-contributing.md) | Guia de contribuição e ordem de implementação | ✅ regras invioláveis alinhadas às seções 16 e 23 |
 | [11-changelog.md](./11-changelog.md) | Histórico de mudanças | ✅ sem conflito de conteúdo |
