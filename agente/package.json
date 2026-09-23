@@ -1,0 +1,21 @@
+{
+  "name": "agente",
+  "version": "1.0.0",
+  "description": "Agente: host MCP por dentro, servidor A2A por fora. Sem LLM, decisao por regra fixa.",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "dev": "tsx watch src/index.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "tsx": "4.23.15"
+  },
+  "devDependencies": {
+    "@types/node": "24.10.1",
+    "typescript": "5.9.3"
+  }
+}

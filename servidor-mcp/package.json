@@ -1,0 +1,21 @@
+{
+  "name": "servidor-mcp",
+  "version": "1.0.0",
+  "description": "Servidor MCP (Streamable HTTP) do desafio A Ponte: reserva de salas com ciclo MRTR.",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "dev": "tsx watch src/index.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "tsx": "4.23.15"
+  },
+  "devDependencies": {
+    "@types/node": "24.10.1",
+    "typescript": "5.9.3"
+  }
+}
